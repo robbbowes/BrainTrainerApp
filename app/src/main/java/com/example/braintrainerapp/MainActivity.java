@@ -20,14 +20,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        int number1 = generateRandomNumber(50) + 1;
-        int number2 = generateRandomNumber(50) + 1;
-        int operator = generateRandomNumber(2);
-
-        AnswerObjectClass answerObject = generateRandomAnswer(number1, number2, operator);
-
-        TextView questionTextView = findViewById(R.id.question);
-        questionTextView.setText(answerObject.getAnswerString());
+        createAndDisplayQuestion();
+//        int number1 = generateRandomNumber(50) + 1;
+//        int number2 = generateRandomNumber(50) + 1;
+//        int operator = generateRandomNumber(2);
+//
+//        AnswerObjectClass answerObject = generateRandomAnswer(number1, number2, operator);
+//
+//        TextView questionTextView = findViewById(R.id.question);
+//        questionTextView.setText(answerObject.getAnswerString());
     }
 
     //returns random number from 0 to max
@@ -50,14 +51,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void reload(View view) {
-        int number1 = generateRandomNumber(50) + 1;
-        int number2 = generateRandomNumber(50) + 1;
-        int operator = generateRandomNumber(2);
-
-        AnswerObjectClass answerObject = generateRandomAnswer(number1, number2, operator);
-
-        TextView questionTextView = findViewById(R.id.question);
-        questionTextView.setText(answerObject.getAnswerString());
+        createAndDisplayQuestion();
     }
 
     public void createAndDisplayQuestion() {
@@ -76,6 +70,15 @@ public class MainActivity extends AppCompatActivity {
                 (TextView) findViewById(R.id.answer3),
                 (TextView) findViewById(R.id.answer4)
         ));
+        int randomTextViewInt = generateRandomNumber(4);
+        TextView correctAnswerTextView = answerTextViews.get(randomTextViewInt);
+        answerTextViews.remove(correctAnswerTextView);
+        correctAnswerTextView.setText(String.valueOf(answerObject.getAnswerInt()));
+        for (TextView answerTextView : answerTextViews) {
+            answerTextView.setText(String.valueOf(generateRandomNumber(50) + 1));
+        }
+
+        
     }
 
 }
