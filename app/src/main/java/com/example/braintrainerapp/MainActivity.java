@@ -1,5 +1,6 @@
 package com.example.braintrainerapp;
 
+import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -16,33 +17,53 @@ public class MainActivity extends AppCompatActivity {
     private int correctAnswerIndex;
     private int correctAnswers;
     private int totalAnswered;
+    private boolean timeUp;
+    private CountDownTimer countdownTimer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        createNewTimer();
         createAndDisplayQuestions();
+    }
 
+    public void createNewTimer() {
+        countdownTimer = new CountDownTimer(30000, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                TextView timerTextView = findViewById(R.id.timeRemaining);
+                String timeString = (millisUntilFinished / 1000) + "s";
+                timerTextView.setText(timeString);
+            }
+
+            @Override
+            public void onFinish() {
+                timeUp = true;
+            }
+        };
+        countdownTimer.start();
     }
 
     public void checkAnswer(View view) {
-        String feedbackString;
-        totalAnswered++;
-        int tag = Integer.parseInt(view.getTag().toString());
-        if (tag == correctAnswerIndex) {
-            correctAnswers++;
-            feedbackString = "Correct!";
-        } else {
-            feedbackString = "Wrong!";
-        }
-        TextView feedbackTextView = findViewById(R.id.feedbackTextView);
-        feedbackTextView.setText(feedbackString);
+        if (!timeUp) {
+            String feedbackString;
+            totalAnswered++;
+            int tag = Integer.parseInt(view.getTag().toString());
+            if (tag == correctAnswerIndex) {
+                correctAnswers++;
+                feedbackString = "Correct!";
+            } else {
+                feedbackString = "Wrong!";
+            }
+            TextView feedbackTextView = findViewById(R.id.feedbackTextView);
+            feedbackTextView.setText(feedbackString);
 
-        TextView scoreTextView = findViewById(R.id.score);
-        String scoreString = correctAnswers + "/" + totalAnswered;
-        scoreTextView.setText(scoreString);
-        createAndDisplayQuestions();
+            TextView scoreTextView = findViewById(R.id.score);
+            String scoreString = correctAnswers + "/" + totalAnswered;
+            scoreTextView.setText(scoreString);
+            createAndDisplayQuestions();
+        }
     }
 
     //returns random number from 0 to max
@@ -65,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void reload(View view) {
+        createNewTimer();
         createAndDisplayQuestions();
     }
 
