@@ -138,7 +138,11 @@ public class MainActivity extends AppCompatActivity {
         answerTextViews.remove(correctAnswerTextView);
         correctAnswerTextView.setText(String.valueOf(correctAnswer.getAnswerInt()));
         for (TextView answerTextView : answerTextViews) {
-            answerTextView.setText(String.valueOf(generateRandomNumber(50) + 1));
+            int incorrectAnswer = generateRandomNumber(50) + 1;
+            while (incorrectAnswer == correctAnswer.getAnswerInt()) {
+                incorrectAnswer = generateRandomNumber(50) + 1;
+            }
+            answerTextView.setText(String.valueOf(incorrectAnswer);
         }
     }
 
