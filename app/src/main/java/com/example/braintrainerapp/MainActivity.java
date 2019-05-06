@@ -4,6 +4,7 @@ import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -15,17 +16,39 @@ import static java.util.Arrays.asList;
 public class MainActivity extends AppCompatActivity {
 
     private int correctAnswerIndex;
-    private int correctAnswers;
-    private int totalAnswered;
-    private boolean timeUp;
+    private int correctAnswers = 0;
+    private int totalAnswered = 0;
+    private boolean timeUp = false;
     private CountDownTimer countdownTimer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        newGame();
+    }
+
+    private void newGame() {
+        Button newGameButton = findViewById(R.id.newGameButton);
+        newGameButton.setVisibility(View.INVISIBLE);
+        TextView feedbackTextView = findViewById(R.id.feedbackTextView);
+        feedbackTextView.clearComposingText();
+        timeUp = false;
+        correctAnswers = 0;
+        totalAnswered = 0;
+        updateScore();
         createNewTimer();
         createAndDisplayQuestions();
+    }
+
+    private void updateScore() {
+        TextView scoreTextView = findViewById(R.id.score);
+        String scoreString = correctAnswers + "/" + totalAnswered;
+        scoreTextView.setText(scoreString);
+    }
+
+    public void restart(View view) {
+        newGame();
     }
 
     public void createNewTimer() {
@@ -40,6 +63,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFinish() {
                 timeUp = true;
+                TextView feedbackTextView = findViewById(R.id.feedbackTextView);
+                String timeUp = "Time's up!";
+                feedbackTextView.setText(timeUp);
+                TextView timerTextView = findViewById(R.id.timeRemaining);
+                timerTextView.clearComposingText();
+                Button newGameButton = findViewById(R.id.newGameButton);
+                newGameButton.setVisibility(View.VISIBLE);
             }
         };
         countdownTimer.start();
@@ -59,9 +89,7 @@ public class MainActivity extends AppCompatActivity {
             TextView feedbackTextView = findViewById(R.id.feedbackTextView);
             feedbackTextView.setText(feedbackString);
 
-            TextView scoreTextView = findViewById(R.id.score);
-            String scoreString = correctAnswers + "/" + totalAnswered;
-            scoreTextView.setText(scoreString);
+            updateScore();
             createAndDisplayQuestions();
         }
     }
@@ -83,11 +111,6 @@ public class MainActivity extends AppCompatActivity {
             answerString = number1 + " - " + number2 + " ?";
         }
         return new AnswerObjectClass(answerInt, answerString);
-    }
-
-    public void reload(View view) {
-        createNewTimer();
-        createAndDisplayQuestions();
     }
 
     public void createAndDisplayQuestions() {
