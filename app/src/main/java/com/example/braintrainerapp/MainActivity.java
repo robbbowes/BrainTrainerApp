@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
         Button newGameButton = findViewById(R.id.newGameButton);
         newGameButton.setVisibility(View.INVISIBLE);
         TextView feedbackTextView = findViewById(R.id.feedbackTextView);
-        feedbackTextView.clearComposingText();
+        feedbackTextView.setText("");
         timeUp = false;
         correctAnswers = 0;
         totalAnswered = 0;
