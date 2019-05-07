@@ -142,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
             while (incorrectAnswer == correctAnswer.getAnswerInt()) {
                 incorrectAnswer = generateRandomNumber(50) + 1;
             }
-            answerTextView.setText(String.valueOf(incorrectAnswer);
+            answerTextView.setText(String.valueOf(incorrectAnswer));
         }
     }
 
